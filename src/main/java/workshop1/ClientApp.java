@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class ClientApp extends JFrame {
     private static final int WIDTH = 400;
@@ -84,9 +86,16 @@ public class ClientApp extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (server.isStateOn() && connected) {
-                    outputToClientWindow(getClientMessage());
-                    server.handlingMessageFromClient(getClientMessage());
-                    setClientMessage();
+                    handlingMessageByClient();
+                }
+            }
+        });
+        //отслеживание нажатия клавиши Enter
+        fieldUserMessage.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    handlingMessageByClient();
                 }
             }
         });
@@ -123,7 +132,7 @@ public class ClientApp extends JFrame {
         }
     }
 
-    //
+    //отключение клиента от сервера
     public void disconnectToServer() {
         if (!server.isStateOn()) {
             userLogging.setVisible(true);
@@ -134,5 +143,11 @@ public class ClientApp extends JFrame {
 
     protected void outputToClientWindow(String message) {
         areaLog.append(message + "\n");
+    }
+
+    private void handlingMessageByClient() {
+        outputToClientWindow(getClientMessage());
+        server.handlingMessageFromClient(getClientMessage());
+        setClientMessage();
     }
 }
