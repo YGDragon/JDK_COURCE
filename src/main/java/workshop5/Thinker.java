@@ -62,15 +62,4 @@ public class Thinker implements Runnable {
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(thinkerID);
-        if (fLeft.getUserID().intValue() == thinkerID)
-            sb.append("Философ: ").append(fLeft);
-        if (fRight.getUserID().intValue() == thinkerID)
-            sb.append("Философ: ").append(fRight);
-        return sb.toString();
-    }
 }
